@@ -7,7 +7,7 @@
 
 #include "simhash.h"
 
-void usage(int argc, char** argv)
+static void usage(int argc, const char** argv)
 {
     std::cout << "usage: " << argv[0]
               << " --blocks BLOCKS"
@@ -22,7 +22,7 @@ void usage(int argc, char** argv)
               << "  --output OUTPUT        Path to output ('-' for stdout)\n";
 }
 
-std::unordered_set<Simhash::hash_t> read_hashes(std::istream& stream)
+static std::unordered_set<Simhash::hash_t> read_hashes(std::istream& stream)
 {
     std::unordered_set<Simhash::hash_t> hashes;
     for (std::string line; std::getline(stream, line); )
@@ -32,7 +32,7 @@ std::unordered_set<Simhash::hash_t> read_hashes(std::istream& stream)
     return hashes;
 }
 
-void write_clusters(std::ostream& stream, const Simhash::clusters_t& clusters)
+static void write_clusters(std::ostream& stream, const Simhash::clusters_t& clusters)
 {
     for (const auto& cluster : clusters)
     {
@@ -47,7 +47,13 @@ void write_clusters(std::ostream& stream, const Simhash::clusters_t& clusters)
     stream.flush();
 }
 
-int main(int argc, char **argv) {
+
+#if defined(BUILD_MONOLITHIC)
+#define main      simhash_find_clusters_main
+#endif
+
+extern "C"
+int main(int argc, const char **argv) {
 
     std::string input, output;
     size_t blocks(0), distance(0);
