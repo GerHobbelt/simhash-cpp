@@ -8,7 +8,7 @@ identical to a query fingerprint. In this context, a fingerprint is an unsigned
 
 It also comes with an auxillary function designed to generate a fingerprint
 given a `char*` and a length. This fingeprint is generated with a tokenizer and
-a hash function (both of which may be provided as template paramters). Using a
+a hash function (both of which may be provided as template parameters). Using a
 cyclic hash function, it then performs simhash on a moving window of tokens (as
 defined by the tokenizer).
 
